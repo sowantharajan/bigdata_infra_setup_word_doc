@@ -1,0 +1,95 @@
+If you are using MacOS, then you can install Homebrew package manager and run following commands from terminal:-
+
+To install Java (Prerequisite for Kafka), run
+
+brew install openjdk@11
+To install Kafka, run
+
+$ brew install kafka
+Here are the brew logs of Kafka Installation, Note that brew also installs Zookeeper as Kafka dependency:-
+
+********************************************************************************************************* 
+==> Installing kafka dependency: zookeeper
+==> Pouring zookeeper--3.7.0.catalina.bottle.tar.gz
+==> Caveats
+To have launchd start zookeeper now and restart at login:
+  brew services start zookeeper
+Or, if you don't want/need a background service you can just run:
+  zkServer start
+==> Summary
+🍺  /usr/local/Cellar/zookeeper/3.7.0: 1,073 files, 42.4MB
+==> Installing kafka
+==> Pouring kafka--2.8.0.catalina.bottle.tar.gz
+==> Caveats
+To have launchd start kafka now and restart at login:
+  brew services start kafka
+Or, if you don't want/need a background service you can just run:
+  zookeeper-server-start -daemon /usr/local/etc/kafka/zookeeper.properties & kafka-server-start /usr/local/etc/kafka/server.properties
+==> Summary
+🍺  /usr/local/Cellar/kafka/2.8.0: 200 files, 68.2MB
+==> zookeeper
+To have launchd start zookeeper now and restart at login:
+  brew services start zookeeper
+Or, if you don't want/need a background service you can just run:
+  zkServer start
+==> kafka
+To have launchd start kafka now and restart at login:
+  brew services start kafka
+Or, if you don't want/need a background service you can just run:
+  zookeeper-server-start -daemon /usr/local/etc/kafka/zookeeper.properties & kafka-server-start /usr/local/etc/kafka/server.properties
+********************************************************************************************************* 
+  
+  
+Edit the server.properties file
+
+$ vim /usr/local/etc/kafka/server.properties
+Looks like default server.properties is not valid for this version kafka.
+It works after changing like below:
+
+Uncomment the listeners property and update the value from
+listeners=PLAINTEXT://:9092
+to
+listeners=PLAINTEXT://localhost:9092
+
+
+Note: If you want separate folder for logs and zookeeper data then change it like in the actual document 
+[sudo mkdir -p /usr/local/var/run/zookeeper/data
+sudo chmod 777 /usr/local/var/run/zookeeper/data
+
+mkdir -p /usr/local/var/lib/kafka-logs
+sudo chmod 777 /usr/local/var/lib/kafka-logs
+/usr/local/Cellar/kafka/2.1.0/libexec/bin/kafka-server-start.sh /usr/local/etc/kafka/server.properties]
+
+Start Zookeeper in new terminal using:
+
+$ zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties
+Start Kafka in new terminal using:
+
+$ kafka-server-start /usr/local/etc/kafka/server.properties
+
+Additional steps(If you want):
+Setting the Path:
+To run Kafka from anywhere, use the following steps to set the path:
+
+Step1: Move into the bin folder of . Open the '.bash_profile' file by using the command: 'nano ~/.bash_profile'.
+
+Step2: The '.bash_profile' file will open. Go to the end and set the path as:
+
+export PATH:"$PATH:/<forepath_directory>/<kafka_directory>/bin"  
+Note: To know the forepath directory, use 'pwd' command. It will display its name.
+Step3: After setting the path, apply 'kafka-' or 'kafka-topics.sh' command to know whether the path is successfully set.
+
+Using Brew
+If the mac users have Brew installed, they can use it for Kafka installation.
+
+There are following steps used to install Apache Kafka using brew:
+
+Step1: Use 'brew install kafka' and press enter key to install Kafka. Wait a while, and Kafka will be installed on the system. To test, use any kafka command.
+
+Step2: If the 'kafka-' command is used, it will show files with and without '.sh' extension files. It is because the bin path is set in the '.bash_profile' file. So, edit the file again and remove that line from the end. Save, and exit.
+
+Step3: Again use the command 'kafka-', now the files without '.sh' will appear.
+
+Step4; But, to use kafka commands, the user needs to visit the kafka_directory always.
+
+So, this is another way to install Apache Kafka on the system.
